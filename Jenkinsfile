@@ -9,7 +9,7 @@ node('master') {
         		sh "git rev-parse HEAD > .git/commit-id"
 				env.COMMIT_ID = readFile('.git/commit-id').substring(0, 7).toUpperCase()
 				echo "Generating Docker Image tag based on commit id ${env.TAG_REPO}-${env.COMMIT_ID}"
-				echo "${env.COMMIT_ID}
+				echo "${env.COMMIT_ID}"
 			}
 			stage ('Build Image') {
 				echo 'build'
