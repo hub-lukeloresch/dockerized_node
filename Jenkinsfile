@@ -8,8 +8,8 @@ node("master") {
         println commit_id
     
         stage "build"
-        def app = docker.build "lukeloresch/dockerized_node"
-    
+        //def app = docker.build "lukeloresch/dockerized_node"
+   	def app = sh "docker build -t dockerized_node ." 
         stage "publish"
         app.push 'master'
         app.push "${commit_id}"
