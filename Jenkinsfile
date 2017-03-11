@@ -3,10 +3,10 @@ node('master') {
 	env.TAG_REPO = "https://hub.docker.com/r/lukeloresch/dockerized_node/"
 	
 	try {
-		docker.withRegistry('https://hub.docker.com/r/lukeloresch/dockerized_node/', 'hub-lukeloresch') {
+		docker.withRegistry('https://hub.docker.com/r/lukeloresch/dockerized_node/', 'hub-lukeloresch' {
 			stage('Checkout') {
 				checkout scm
-        		sh "git rev-parse HEAD > .git/commit-id"
+   		   		sh "git rev-parse HEAD > .git/commit-id"
 				env.COMMIT_ID = readFile('.git/commit-id').substring(0, 7).toUpperCase()
 				echo "Generating Docker Image tag based on commit id ${env.TAG_REPO}-${env.COMMIT_ID}"
 				echo "${env.COMMIT_ID}"
