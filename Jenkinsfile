@@ -1,17 +1,28 @@
-node("master") {
-    docker.withRegistry('https://hub.docker.com/r/lukeloresch/dockerized_node/', 'hub-lukeloresch') {
-	//sh "docker pull lukeloresch/dockerized_node"    
-        git url: "https://github.com/hub-lukeloresch/dockerized_node.git", credentialsId: 'hub-lukeloresch'
-    
-        sh "git rev-parse HEAD > .git/commit-id"
-        def commit_id = readFile('.git/commit-id').trim()
-        println commit_id
-    
-        stage "build"
-        //def app = docker.build "lukeloresch/dockerized_node"
-   	def app = sh "docker build -t dockerized_node ." 
-        stage "publish"
-        app.push 'master'
-        app.push "${commit_id}"
-    }
+node('master') {
+	currentBuild.result = "SUCCESS" 
+	env.TAG_REPO = "https://hub.docker.com/r/lukeloresch/dockerized_node/"
+	
+	try {
+		docker.withRegistry('https://hub.docker.com/r/lukeloresch/dockerized_node/', 'hub-lukeloresch') {
+			stage('Checkout') {
+				checkout scm
+        		sh "git rev-parse HEAD > .git/commit-id"
+				env.COMMIT_ID = readFile('.git/commit-id').substring(0, 7).toUpperCase()
+				echo "Generating Docker Image tag based on commit id ${env.TAG_REPO}-${env.COMMIT_ID}"
+				echo "${env.COMMIT_ID}
+			}
+			stage ('Build Image') {
+				echo 'build'
+				sh "docker build -t ${env.TAG_REPO} ."
+			}
+			stage ('Deploy') {
+				echo 'deploy'
+				sh "docker push ${env.TAG_REPO}"
+
+			}
+		})
+	}
+	catch(err) {
+		throw err;
+	}
 }
