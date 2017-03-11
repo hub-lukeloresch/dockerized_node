@@ -1,4 +1,4 @@
-node("docker") {
+node("master") {
     docker.withRegistry('lukeloresch', 'hub-lukeloresch') {
     
         git url: "https://github.com/hub-lukeloresch/dockerized_node.git", credentialsId: 'hub-lukeloresch'
