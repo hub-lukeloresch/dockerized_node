@@ -3,7 +3,6 @@ node('master') {
 	env.TAG_REPO = "https://hub.docker.com/r/lukeloresch/dockerized_node/"
 	
 	try {
-		docker.withRegistry('https://hub.docker.com/r/lukeloresch/dockerized_node/', 'hub-lukeloresch' {
 			stage('Checkout') {
 				checkout scm
    		   		sh "git rev-parse HEAD > .git/commit-id"
@@ -20,7 +19,7 @@ node('master') {
 				sh "docker push ${env.TAG_REPO}"
 
 			}
-		})
+		
 	}
 	catch(err) {
 		throw err;
