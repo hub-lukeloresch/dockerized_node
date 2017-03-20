@@ -4,7 +4,7 @@ node() {
 
     currentBuild.result = "SUCCESS"
 
-    env.TAG_REPO = "https://hub.docker.com/r/lukeloresch/dockerized_node/"
+    env.TAG_REPO = "lukeloresch/dockerized_node/"
     env.DOCKER_HUB_CREDS = ""; //env.DOCKER_HUB_CREDS_DEV;
     
     try {
